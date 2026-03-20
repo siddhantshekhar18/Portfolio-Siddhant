@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Hero.css';
 import resumeFile from '../assets/Files/SiddhantShekhar_Resume_2026.pdf';
-import profilePhoto from '../assets/Files/Photo2.jpg';
+import profilePhoto from '../assets/Files/Photo.jpg';
 
 export default function Hero() {
   return (
