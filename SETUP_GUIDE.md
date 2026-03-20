@@ -182,22 +182,28 @@ This creates a `dist/` folder with optimized production files.
 - **Professional spacing** - Clean, balanced layout
 - **Typography** - Easy to read fonts
 
-## 💬 Contact Form Notes
+## 💬 Contact Form Setup (Web3Forms)
 
-Currently logs to console. To enable email:
+This project now uses Web3Forms directly from the frontend, so no backend deployment is required for the contact form.
 
-**Option 1: Using EmailJS (Free)**
+### Steps
+
+1. Create a free account and form access key at: https://web3forms.com
+2. Add this key to your local environment file:
+
 ```bash
-npm install @emailjs/browser
+VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here
 ```
 
-**Option 2: Using Formspree (No-code)**
-- Visit formspree.io
-- Create form
-- Update form action in Contact.jsx
+3. Restart the dev server after updating environment variables:
 
-**Option 3: Your own backend**
-- Point form to your server endpoint
+```bash
+npm run dev
+```
+
+### For deployment
+
+Add VITE_WEB3FORMS_ACCESS_KEY in your hosting provider environment variables (Vercel, Netlify, etc.) and redeploy.
 
 ## 🆘 Common Issues & Solutions
 

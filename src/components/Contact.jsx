@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../styles/Contact.css';
 
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -29,59 +31,40 @@ export default function Contact() {
     try {
       setIsSubmitting(true);
 
-      const configuredBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
-      const endpointCandidates = configuredBase
-        ? [`${configuredBase}/api/contact`]
-        : ['/api/contact', 'http://localhost:5000/api/contact'];
+      const accessKey = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '').trim();
 
-      let submitError =
-        'Unable to send message right now. Please ensure the contact backend is running and configured.';
-
-      for (const endpoint of endpointCandidates) {
-        try {
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-
-          const contentType = response.headers.get('content-type') || '';
-          let data = null;
-
-          if (contentType.includes('application/json')) {
-            data = await response.json();
-          } else {
-            const textResponse = await response.text();
-            data = { message: textResponse };
-          }
-
-          if (!response.ok) {
-            const serverMessage = typeof data?.message === 'string' ? data.message.trim() : '';
-
-            if (serverMessage && !serverMessage.startsWith('<!DOCTYPE') && !serverMessage.startsWith('<html')) {
-              submitError = serverMessage;
-            }
-
-            continue;
-          }
-
-          setToastType('success');
-          setToastTitle('Message Sent');
-          setToastText('Thank you for your message! I will get back to you soon.');
-          setIsToastVisible(true);
-          setFormData({ name: '', email: '', subject: '', message: '' });
-          return;
-        } catch (requestError) {
-          if (requestError?.message) {
-            submitError = requestError.message;
-          }
-        }
+      if (!accessKey) {
+        throw new Error('Web3Forms access key is missing. Add VITE_WEB3FORMS_ACCESS_KEY in your environment file.');
       }
 
-      throw new Error(submitError);
+      const payload = {
+        access_key: accessKey,
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      };
+
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.message || 'Unable to send message right now. Please try again.');
+      }
+
+      setToastType('success');
+      setToastTitle('Message Sent');
+      setToastText('Thank you for your message! I will get back to you soon.');
+      setIsToastVisible(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
       setToastType('error');
       setToastTitle('Send Failed');
