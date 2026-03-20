@@ -29,45 +29,59 @@ export default function Contact() {
     try {
       setIsSubmitting(true);
 
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
-      const contactEndpoint = `${apiBaseUrl}/api/contact`;
+      const configuredBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+      const endpointCandidates = configuredBase
+        ? [`${configuredBase}/api/contact`]
+        : ['/api/contact', 'http://localhost:5000/api/contact'];
 
-      const response = await fetch(contactEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      let submitError =
+        'Unable to send message right now. Please ensure the contact backend is running and configured.';
 
-      const contentType = response.headers.get('content-type') || '';
-      let data = null;
+      for (const endpoint of endpointCandidates) {
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
 
-      if (contentType.includes('application/json')) {
-        data = await response.json();
-      } else {
-        const textResponse = await response.text();
-        data = { message: textResponse };
-      }
+          const contentType = response.headers.get('content-type') || '';
+          let data = null;
 
-      if (!response.ok) {
-        const serverMessage = typeof data?.message === 'string' ? data.message.trim() : '';
+          if (contentType.includes('application/json')) {
+            data = await response.json();
+          } else {
+            const textResponse = await response.text();
+            data = { message: textResponse };
+          }
 
-        if (serverMessage && !serverMessage.startsWith('<!DOCTYPE') && !serverMessage.startsWith('<html')) {
-          throw new Error(serverMessage);
+          if (!response.ok) {
+            const serverMessage = typeof data?.message === 'string' ? data.message.trim() : '';
+
+            if (serverMessage && !serverMessage.startsWith('<!DOCTYPE') && !serverMessage.startsWith('<html')) {
+              submitError = serverMessage;
+            }
+
+            continue;
+          }
+
+          setToastType('success');
+          setToastTitle('Message Sent');
+          setToastText('Thank you for your message! I will get back to you soon.');
+          setIsToastVisible(true);
+          setFormData({ name: '', email: '', subject: '', message: '' });
+          return;
+        } catch (requestError) {
+          if (requestError?.message) {
+            submitError = requestError.message;
+          }
         }
-
-        throw new Error(
-          'Unable to send message right now. Please ensure the contact backend is running and configured.'
-        );
       }
 
-      setToastType('success');
-      setToastTitle('Message Sent');
-      setToastText('Thank you for your message! I will get back to you soon.');
-      setIsToastVisible(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      throw new Error(submitError);
     } catch (error) {
       setToastType('error');
       setToastTitle('Send Failed');
