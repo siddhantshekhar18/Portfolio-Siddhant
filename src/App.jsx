@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from './components/Navbar';
+import Seo from './components/Seo';
 import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -12,6 +13,7 @@ import './styles/globals.css';
 function App() {
   return (
     <div className="App">
+      <Seo />
       <Navbar />
       <Hero />
       <About />
