@@ -29,18 +29,38 @@ export default function Contact() {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch('/api/contact', {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+      const contactEndpoint = `${apiBaseUrl}/api/contact`;
+
+      const response = await fetch(contactEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      let data = null;
+
+      if (contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const textResponse = await response.text();
+        data = { message: textResponse };
+      }
 
       if (!response.ok) {
-        throw new Error(data?.message || 'Unable to send message right now.');
+        const serverMessage = typeof data?.message === 'string' ? data.message.trim() : '';
+
+        if (serverMessage && !serverMessage.startsWith('<!DOCTYPE') && !serverMessage.startsWith('<html')) {
+          throw new Error(serverMessage);
+        }
+
+        throw new Error(
+          'Unable to send message right now. Please ensure the contact backend is running and configured.'
+        );
       }
 
       setToastType('success');
