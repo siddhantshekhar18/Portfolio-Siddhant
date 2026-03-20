@@ -140,6 +140,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
   min-height: 50px;
   gap: 8px;
 }
@@ -159,6 +160,8 @@
   font-weight: 600;
   margin: 0;
   line-height: 1.3;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .contact-item a:hover {
@@ -171,6 +174,8 @@
   font-weight: 600;
   margin: 0;
   line-height: 1.3;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .social-links {
@@ -486,6 +491,18 @@
     padding: 25px;
   }
 
+  .contact-item {
+    padding: 20px;
+    gap: 14px;
+  }
+
+  .contact-item i {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    font-size: 28px;
+  }
+
   .social-icons {
     flex-wrap: wrap;
   }
@@ -494,5 +511,31 @@
     right: 12px;
     bottom: 12px;
     width: calc(100vw - 24px);
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .contact {
+    padding: 52px 14px;
+  }
+
+  .contact-content {
+    margin-top: 30px;
+    gap: 30px;
+  }
+
+  .contact-item {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .contact-item h4 {
+    font-size: 15px;
+  }
+
+  .contact-item a,
+  .contact-item p {
+    font-size: 13px;
+    line-height: 1.35;
   }
 }

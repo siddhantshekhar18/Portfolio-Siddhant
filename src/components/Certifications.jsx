@@ -46,7 +46,7 @@ export default function Certifications() {
                   <img
                     src={certificate.image}
                     alt={certificate.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    className="certificate-image-file"
                   />
                 ) : (
                   <div className="certificate-placeholder">

@@ -1,5 +1,5 @@
 .certifications {
-  padding: 120px 20px;
+  padding: clamp(72px, 10vw, 120px) 20px;
   background:
     radial-gradient(circle at 12% 25%, rgba(0, 229, 255, 0.1), transparent 30%),
     radial-gradient(circle at 88% 78%, rgba(255, 43, 214, 0.12), transparent 35%),
@@ -55,10 +55,10 @@
 }
 
 .certifications-grid {
-  margin-top: 50px;
+  margin-top: clamp(30px, 5vw, 50px);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
+  gap: clamp(18px, 3vw, 30px);
 }
 
 .certificate-card {
@@ -101,6 +101,13 @@
   z-index: 1;
 }
 
+.certificate-image-file {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .certificate-placeholder {
   width: 100%;
   height: 100%;
@@ -126,7 +133,7 @@
 }
 
 .certificate-content h3 {
-  font-size: 18px;
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
   line-height: 1.4;
   color: #eef6ff;
   margin-bottom: 14px;
@@ -140,13 +147,23 @@
 
 .certificate-meta p {
   color: #a8bfd7;
-  font-size: 13px;
+  font-size: clamp(0.78rem, 1.05vw, 0.82rem);
   line-height: 1.5;
 }
 
 .certificate-meta span {
   color: #d7ecff;
   font-weight: 700;
+}
+
+@media screen and (max-width: 1024px) {
+  .certifications {
+    padding: 72px 18px;
+  }
+
+  .certifications-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -162,5 +179,46 @@
 
   .certificate-content {
     padding: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .certifications {
+    padding: 52px 14px;
+  }
+
+  .certifications .section-title {
+    font-size: clamp(1.7rem, 10.5vw, 2.15rem);
+  }
+
+  .certifications .section-subtitle {
+    font-size: 14px;
+    max-width: 30ch;
+  }
+
+  .certifications-grid {
+    margin-top: 24px;
+    gap: 16px;
+  }
+
+  .certificate-card {
+    border-radius: 18px;
+  }
+
+  .certificate-image {
+    aspect-ratio: 4 / 3;
+  }
+
+  .certificate-content {
+    padding: 16px;
+  }
+
+  .certificate-content h3 {
+    font-size: 0.96rem;
+    margin-bottom: 10px;
+  }
+
+  .certificate-meta p {
+    font-size: 0.75rem;
   }
 }

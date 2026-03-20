@@ -282,6 +282,36 @@ body::after {
   margin-bottom: 40px;
 }
 
+@media screen and (max-width: 768px) {
+  .section-title {
+    font-size: clamp(2rem, 8.5vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: 0.3px;
+    max-width: 100%;
+  }
+
+  .section-title::after {
+    width: 86px;
+    bottom: -12px;
+  }
+
+  .section-subtitle {
+    font-size: 15px;
+    margin-bottom: 30px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .section-title {
+    font-size: clamp(1.72rem, 11vw, 2.2rem);
+    line-height: 1.12;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+  }
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 10px;
