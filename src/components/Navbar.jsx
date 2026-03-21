@@ -18,9 +18,14 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="navbar-logo">
+        <button
+          type="button"
+          className="navbar-logo"
+          onClick={() => scrollToSection('home')}
+          aria-label="Go to home section"
+        >
           <img src={logo} alt="Siddhant Shekhar Logo" className="navbar-logo-image" />
-        </div>
+        </button>
         
         <div className={`menu-icon ${isOpen ? 'active' : ''}`} onClick={toggleMenu}>
           <div className="hamburger"></div>

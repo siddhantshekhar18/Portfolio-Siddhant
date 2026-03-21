@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import '../styles/Projects.css';
 import nexusBanner from '../assets/Files/nexus.png';
 import weatherWebBanner from '../assets/Files/weather-web.png';
@@ -6,7 +6,7 @@ import KaryON from '../assets/Files/KaryON.png';
 import AxisCon from '../assets/Files/AxisCon.png';
 
 export default function Projects() {
-  const projectsData = [
+  const projectsData = useMemo(() => [
     {
       id: 1,
       title: 'KaryON Web App',
@@ -43,7 +43,7 @@ export default function Projects() {
       githubLink: 'https://github.com/Cosmic-Aura-Tech-Industry-CATI/AxisCon',
       image: AxisCon
     },
-  ];
+  ], []);
 
   return (
     <section id="projects" className="projects">

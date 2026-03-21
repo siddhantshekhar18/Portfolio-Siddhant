@@ -30,6 +30,15 @@
   align-items: center;
 }
 
+.navbar-logo {
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 .navbar-logo h1 {
   font-size: 26px;
   font-weight: 900;
@@ -49,6 +58,17 @@
   width: auto;
   display: block;
   object-fit: contain;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.navbar-logo:hover .navbar-logo-image {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.3));
+}
+
+.navbar-logo:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.9);
+  outline-offset: 5px;
 }
 
 .navbar-logo h1:hover {
