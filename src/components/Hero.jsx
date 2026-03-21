@@ -26,15 +26,18 @@ export default function Hero() {
               VIEW MY WORK
             </button>
             <button 
-              className="btn btn-secondary"
+              className="btn btn-primary"
               onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
             >
               CONTACT ME
             </button>
-          </div>
-          
-          <div className="hero-cta">
-            <a href={resumeFile} download="SiddhantShekhar_Resume_2026.pdf" className="download-cv">DOWNLOAD CV</a>
+            <a
+              href={resumeFile}
+              download="SiddhantShekhar_Resume_2026.pdf"
+              className="btn btn-primary hero-action-link"
+            >
+              DOWNLOAD CV
+            </a>
           </div>
         </div>
         
