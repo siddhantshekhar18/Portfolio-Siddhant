@@ -85,12 +85,12 @@ export default function Contact() {
     <section id="contact" className="contact">
       <div className="contact-container">
         <h2 className="section-title">Contact Me</h2>
-        <p className="section-subtitle">Let's get in touch and discuss your ideas</p>
+        <p className="section-subtitle">Open to internships, freelance projects, and exciting tech collaborations</p>
         
         <div className="contact-content">
           <div className="contact-info">
             <h3>Get In Touch</h3>
-            <p>Feel free to reach out for collaborations or just a friendly hello!</p>
+            <p>As a Computer Science student, I'm open to internships and tech roles where I can solve real problems and grow as a developer.</p>
             
             <div className="contact-item">
               <i className="fas fa-envelope"></i>
