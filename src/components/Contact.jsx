@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Contact.css';
 
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -33,31 +34,49 @@ export default function Contact() {
 
       const accessKey = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '').trim();
 
-      if (!accessKey) {
-        throw new Error('Web3Forms access key is missing. Add VITE_WEB3FORMS_ACCESS_KEY in your environment file and redeploy.');
-      }
+      if (accessKey) {
+        const payload = {
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        };
 
-      const payload = {
-        access_key: accessKey,
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
-      };
+        const response = await fetch(WEB3FORMS_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
 
-      const response = await fetch(WEB3FORMS_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+        const data = await response.json();
 
-      const data = await response.json();
+        if (!response.ok || !data?.success) {
+          throw new Error(data?.message || 'Unable to send message right now. Please try again.');
+        }
+      } else {
+        const backendEndpoint = `${API_BASE_URL}/api/contact`;
 
-      if (!response.ok || !data?.success) {
-        throw new Error(data?.message || 'Unable to send message right now. Please try again.');
+        const response = await fetch(backendEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data?.message ||
+              'Contact backend is unavailable. Start the backend server or set VITE_WEB3FORMS_ACCESS_KEY.'
+          );
+        }
       }
 
       setToastType('success');
