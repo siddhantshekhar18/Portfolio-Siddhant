@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import '../styles/Contact.css';
 
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-const FALLBACK_WEB3FORMS_ACCESS_KEY = 'REVOKED_WEB3FORMS_KEY';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -32,9 +31,7 @@ export default function Contact() {
     try {
       setIsSubmitting(true);
 
-      const accessKey = (
-        import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || FALLBACK_WEB3FORMS_ACCESS_KEY
-      ).trim();
+      const accessKey = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '').trim();
 
       if (!accessKey) {
         throw new Error('Web3Forms access key is missing. Add VITE_WEB3FORMS_ACCESS_KEY in your environment file and redeploy.');
